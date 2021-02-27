@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Gift, User } from "../types";
 
-function GiftItem({
+const GiftItem = memo(function GiftItem({
   gift,
   users,
   currentUser,
@@ -46,6 +47,6 @@ function GiftItem({
       </div>
     </div>
   );
-}
+});
 
 export default GiftItem;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { State } from "./types";
@@ -27,9 +27,9 @@ const App: React.FC = () => {
     }
   };
 
-  const handleReserve = (id: string) => {
+  const handleReserve = useCallback((id: string) => {
     setState((state) => toggleReservation(state, id));
-  };
+  }, []);
 
   return (
     <div className="App">

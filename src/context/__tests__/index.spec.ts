@@ -26,6 +26,12 @@ describe("Reserving an unreserved", () => {
   test(`didn't modify the original state`, () => {
     expect(initialState.gifts[0].reservedBy).toBe(undefined);
   });
+
+  test("does structurally share unchanged parts of the state tree", () => {
+    expect(nextState).not.toBe(initialState);
+    expect(nextState.gifts[0]).not.toBe(initialState.gifts[0]);
+    expect(nextState.gifts[1]).toBe(initialState.gifts[1]);
+  });
 });
 
 describe("Reserving an already reserved gift", () => {
