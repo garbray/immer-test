@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-function App() {
+import { State } from "./types";
+
+import { addGift, toggleReservation } from "./context";
+
+import { initialState } from "./context/mockData";
+import GiftItem from "./components/GiftItem";
+
+const App: React.FC = () => {
+  const [state, setState] = useState<State>(initialState);
+  const { users, gifts, currentUser } = state;
+
+  const handleAdd = () => {
+    const description = prompt("gift to add");
+    if (description) {
+      setState(
+        (state): State =>
+          addGift(
+            state,
+            uuidv4(),
+            description,
+            "https://picsum.photos/200?q=" + Math.random()
+          )
+      );
+    }
+  };
+
+  const handleReserve = (id: string) => {
+    setState((state) => toggleReservation(state, id));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="header">
+        <h1>Hi, {currentUser.name}</h1>
+        <div className="actions">
+          <button onClick={handleAdd}>Add</button>
+        </div>
+        <div className="gifts">
+          {gifts.map((gift) => (
+            <GiftItem
+              key={gift.id}
+              gift={gift}
+              users={users}
+              currentUser={currentUser}
+              onReserved={handleReserve}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;

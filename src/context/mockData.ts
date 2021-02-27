@@ -1,14 +1,7 @@
+import { allUsers } from "../helpers";
+
 export const initialState = {
-  users: [
-    {
-      id: 1,
-      name: "Main user",
-    },
-    {
-      id: 2,
-      name: "Second user",
-    },
-  ],
+  users: allUsers,
   currentUser: {
     id: 1,
     name: "Main user",
