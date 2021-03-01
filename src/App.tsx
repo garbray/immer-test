@@ -2,9 +2,7 @@ import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { State } from "./types";
-
 import { addGift, toggleReservation } from "./context";
-
 import { initialState } from "./context/mockData";
 import GiftItem from "./components/GiftItem";
 
@@ -31,12 +29,18 @@ const App: React.FC = () => {
     setState((state) => toggleReservation(state, id));
   }, []);
 
+  const handleReset = () => {
+    setState(() => {
+      return initialState;
+    });
+  };
   return (
     <div className="App">
       <div className="header">
         <h1>Hi, {currentUser.name}</h1>
         <div className="actions">
           <button onClick={handleAdd}>Add</button>
+          <button onClick={handleReset}>Reset</button>
         </div>
         <div className="gifts">
           {gifts.map((gift) => (
