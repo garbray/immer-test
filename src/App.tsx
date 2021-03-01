@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { State } from "./types";
-import { addGift, toggleReservation } from "./context";
+import { addBook, addGift, getBookDetails, toggleReservation } from "./context";
 import { initialState } from "./context/mockData";
 import GiftItem from "./components/GiftItem";
 
@@ -34,12 +34,21 @@ const App: React.FC = () => {
       return initialState;
     });
   };
+
+  const handleAddBook = async () => {
+    const isbn = prompt("Book ISBN code", "0201558025");
+    if (isbn) {
+      const details = await getBookDetails(isbn);
+      setState((state) => addBook(state, details));
+    }
+  };
   return (
     <div className="App">
       <div className="header">
         <h1>Hi, {currentUser.name}</h1>
         <div className="actions">
           <button onClick={handleAdd}>Add</button>
+          <button onClick={handleAddBook}>Add book</button>
           <button onClick={handleReset}>Reset</button>
         </div>
         <div className="gifts">
