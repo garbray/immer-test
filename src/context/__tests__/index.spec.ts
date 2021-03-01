@@ -1,4 +1,4 @@
-import { addGift, State, toggleReservation } from "..";
+import { addBook, addGift, getBookDetails, State, toggleReservation } from "..";
 import { initialState } from "../mockData";
 
 describe("Reserving an unreserved gift", () => {
@@ -54,5 +54,21 @@ describe("Reserving an already reserved gift", () => {
     expect(nextState.gifts[0]).toEqual(initialState.gifts[0]);
     expect(nextState.gifts[0]).toBe(initialState.gifts[0]);
     expect(nextState).toBe(initialState);
+  });
+});
+
+describe("can add book async", () => {
+  test("can add math book", async () => {
+    const book = await getBookDetails("0201558025");
+    const nextState = addBook(initialState, book);
+    expect(nextState.gifts[2].description).toBe("Concrete mathematics");
+  });
+
+  test("Can add two books in parallel", async () => {
+    const book1 = getBookDetails("9781598560169");
+    const book2 = getBookDetails("0201558025");
+
+    const nextState = addBook(addBook(initialState, await book2), await book1);
+    expect(nextState.gifts.length).toBe(4);
   });
 });
