@@ -32,6 +32,12 @@ describe("Reserving an unreserved", () => {
     expect(nextState.gifts[0]).not.toBe(initialState.gifts[0]);
     expect(nextState.gifts[1]).toBe(initialState.gifts[1]);
   });
+
+  test("can't accidentally modify the produced state", () => {
+    expect(() => {
+      nextState.gifts[1].reservedBy = undefined;
+    }).toThrow();
+  });
 });
 
 describe("Reserving an already reserved gift", () => {
@@ -42,5 +48,11 @@ describe("Reserving an already reserved gift", () => {
 
   test("preserves stored reserved by", () => {
     expect(nextState.gifts[1].reservedBy).toBe(2);
+  });
+
+  test("no new gift should be created", () => {
+    expect(nextState.gifts[0]).toEqual(initialState.gifts[0]);
+    expect(nextState.gifts[0]).toBe(initialState.gifts[0]);
+    expect(nextState).toBe(initialState);
   });
 });
